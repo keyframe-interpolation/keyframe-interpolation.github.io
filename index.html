@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- <meta http-equiv="refresh" content="5; url="> -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta content="Generative Keyframe Interpolation with Forward-Backward Consistency" property="og:title">
+    <meta content="Generative Keyframe Interpolation with Forward-Backward Consistency" property="twitter:title">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="assets/video.svg"/>
+    <title>Generative Keyframe Interpolation with Forward-Backward Consistency</title>
+    <meta name="description" content="keyframe interpolation">
+    <meta name="keywords" content="keyframe interpolation, image-to-video diffusion model">
+
+    <meta content="Generative Keyframe Interpolation with Forward-Backward Consistency" property="twitter:title" />
+    <meta content="Generative Keyframe Interpolation with Forward-Backward Consistency" property="twitter:description" />
+
+
+    <meta property="og:image" content="assets/teaser.jpg">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content=""/>
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="assets/teaser.jpg" />
+
+    <!-- Google tag (gtag.js) -->
+    <!-- <script async src=""></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-TPWJGFG8CS');
+    </script> -->
+
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+   <!-- popper used for tooltips -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+   <!-- bootstrap styling used for carousel -->
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+
+   <link rel="stylesheet" href="./static/css/bulma.min.css">
+   <link rel="stylesheet" href="./static/css/index.css">
+   <link rel="stylesheet" href="./static/css/custom.css">
+   <link rel="stylesheet" href="./static/css/fonts.css">
+
+   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  
+   <script defer src="./static/js/fontawesome.all.min.js"></script>
+   <script src="./static/js/interactions.js"></script>
+   <meta charset="UTF-8">
+</head>
+<body>
+    <script src="static/js/select_frame.js"></script>
+
+    <section class="hero">
+        <div class="hero-body" style="padding: 3rem 1.5rem 0.5rem 1.5rem;">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <h1 class="title is-1 publication-title" style="font-size: 44px;">Generative Keyframe Interpolation with Forward-Backward Consistency</h1>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                                <a href="https://jeanne-wang.github.io/" target="_blank">Xiaojuan Wang</a><sup>1</sup>,
+                            </span>
+                            <span class="author-block">
+                                <a href="https://www.linkedin.com/in/zby2003/" target="_blank">Boyang Zhou</a><sup>1</sup>,
+                            </span>
+                            <span class="author-block">
+                                <a href="https://holynski.org" target="_blank">Aleksander Holynski</a><sup>2</sup>
+                            </span>
+                            <span class="author-block">
+                                <a href="https://homes.cs.washington.edu/~curless/" target="_blank">Brian Curless</a><sup>1</sup>,
+                            </span>
+                            <span class="author-block">
+                                <a href="https://www.irakemelmacher.com/" target="_blank">Ira Kemelmacher</a><sup>1</sup>
+                            </span>
+                            <span class="author-block">
+                              <a href="https://www.smseitz.com/" target="_blank">Steve Seitz</a><sup>1</sup>
+                            </span>
+                        </div>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block"><sup>1</sup>University of Washington,</span>
+                            <span class="author-block"><sup>2</sup>Google Research</span>
+                        </div>
+                        <div class="column has-text-centered">
+                            <div class="publication-links">
+                                <span class="link-block">
+                                    <a href="" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="ai ai-arxiv"></i>
+                                        </span>
+                                        <span>arXiv (coming soon)</span>
+                                    </a>
+                                </span>
+                                <span class="link-block">
+                                    <a href="" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fab fa-github"></i>
+                                        </span>
+                                        <span>Code (coming soon)</span>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  
+    <section>
+        <div class="container">
+            <div class="row1">
+                <div class="media3">
+                    <img src="assets/videos/Comparisons/Pexels/Input_pairs/example1/frame1.png" alt="Image 1" data-base-path="assets/videos/Comparisons/Pexels/Input_pairs/example1/">
+                </div>
+                <div class="media4">
+                    <img src="assets/arrow.png">
+                </div>
+                <div class="media3">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/Ours/example1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+            
+                    <h2 class="caption is-size-5 subtitle has-text-centered">
+                    <b>TL;DR: </b>Given a pair of key frames as input, our method generates a continuous intermediate video with consistent motion (25 frames of size 1024x576) using an image-to-video diffusion model.
+                    </h2>
+           
+
+        </div>
+    </section>
+   
+
+    <section class="section">
+        <div class="container">
+            <h2 class="title is-2 is-centered has-text-centered">Baseline comparisons</h2>
+            <!-- example1 -->
+            <div class="row1">
+                <div class="media1">Input pairs</div>
+                <div class="media1">FILM</div>
+                <div class="media1">TRF</div>
+                <div class="media1">Ours</div>
+            </div>
+            <div class="row1">
+                <div class="media1">
+                    <img src="assets/videos/Comparisons/Pexels/Input_pairs/example1/frame1.png" alt="Image 1" data-base-path="assets/videos/Comparisons/Pexels/Input_pairs/example1/">
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/FILM/example1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/SVD_Feng/example1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/Ours/example1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!-- example2 -->
+            <div class="row1">
+                <div class="media1">Input pairs</div>
+                <div class="media1">FILM</div>
+                <div class="media1">TRF</div>
+                <div class="media1">Ours</div>
+            </div>
+            <div class="row1">
+                <div class="media1">
+                    <img src="assets/videos/Comparisons/Pexels/Input_pairs/example2/frame1.png" alt="Image 1" data-base-path="assets/videos/Comparisons/Pexels/Input_pairs/example2/">
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/FILM/example2.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/SVD_Feng/example2.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/Ours/example2.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!-- example3 -->
+            <div class="row1">
+                <div class="media1">Input pairs</div>
+                <div class="media1">FILM</div>
+                <div class="media1">TRF</div>
+                <div class="media1">Ours</div>
+            </div>
+            <div class="row1">
+                <div class="media1">
+                    <img src="assets/videos/Comparisons/Pexels/Input_pairs/example3/frame1.png" alt="Image 1" data-base-path="assets/videos/Comparisons/Pexels/Input_pairs/example3/">
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/FILM/example3.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/SVD_Feng/example3.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/Ours/example3.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!-- example4 -->
+            <div class="row1">
+                <div class="media1">Input pairs</div>
+                <div class="media1">FILM</div>
+                <div class="media1">TRF</div>
+                <div class="media1">Ours</div>
+            </div>
+            <div class="row1">
+                <div class="media1">
+                    <img src="assets/videos/Comparisons/Pexels/Input_pairs/example4/frame1.png" alt="Image 1" data-base-path="assets/videos/Comparisons/Pexels/Input_pairs/example4/">
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/FILM/example4.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/SVD_Feng/example4.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/Ours/example4.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!-- example5 -->
+            <div class="row1">
+                <div class="media1">Input pairs</div>
+                <div class="media1">FILM</div>
+                <div class="media1">TRF</div>
+                <div class="media1">Ours</div>
+            </div>
+            <div class="row1">
+                <div class="media1">
+                    <img src="assets/videos/Comparisons/Pexels/Input_pairs/example5/frame1.png" alt="Image 1" data-base-path="assets/videos/Comparisons/Pexels/Input_pairs/example5/">
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/FILM/example5.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/SVD_Feng/example5.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/Ours/example5.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!-- example6 -->
+            <div class="row1">
+                <div class="media1">Input pairs</div>
+                <div class="media1">FILM</div>
+                <div class="media1">TRF</div>
+                <div class="media1">Ours</div>
+            </div>
+            <div class="row1">
+                <div class="media1">
+                    <img src="assets/videos/Comparisons/Pexels/Input_pairs/example6/frame1.png" alt="Image 1" data-base-path="assets/videos/Comparisons/Pexels/Input_pairs/example6/">
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/FILM/example6.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/SVD_Feng/example6.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/Ours/example6.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!-- example7 -->
+            <div class="row1">
+                <div class="media1">Input pairs</div>
+                <div class="media1">FILM</div>
+                <div class="media1">TRF</div>
+                <div class="media1">Ours</div>
+            </div>
+            <div class="row1">
+                <div class="media1">
+                    <img src="assets/videos/Comparisons/Davis/Input_pairs/kite-surf/frame1.jpg" alt="Image 1" data-base-path="assets/videos/Comparisons/Davis/Input_pairs/kite-surf/">
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Davis/FILM/kite-surf.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Davis/SVD_Feng/kite-surf.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Davis/Ours/kite-surf.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!-- example8 -->
+            <div class="row1">
+                <div class="media1">Input pairs</div>
+                <div class="media1">FILM</div>
+                <div class="media1">TRF</div>
+                <div class="media1">Ours</div>
+            </div>
+            <div class="row1">
+                <div class="media1">
+                    <img src="assets/videos/Comparisons/Davis/Input_pairs/blackswan/frame1.jpg" alt="Image 1" data-base-path="assets/videos/Comparisons/Davis/Input_pairs/blackswan/">
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Davis/FILM/blackswan.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Davis/SVD_Feng/blackswan.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Davis/Ours/blackswan.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!-- example9 -->
+            <div class="row1">
+                <div class="media1">Input pairs</div>
+                <div class="media1">FILM</div>
+                <div class="media1">TRF</div>
+                <div class="media1">Ours</div>
+            </div>
+            <div class="row1">
+                <div class="media1">
+                    <img src="assets/videos/Comparisons/Pexels/Input_pairs/example7/frame1.png" alt="Image 1" data-base-path="assets/videos/Comparisons/Pexels/Input_pairs/example7/">
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/FILM/example7.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/SVD_Feng/example7.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/Ours/example7.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+                
+            <!-- example10 -->
+            <div class="row1">
+                <div class="media1">Input pairs</div>
+                <div class="media1">FILM</div>
+                <div class="media1">TRF</div>
+                <div class="media1">Ours</div>
+            </div>
+            <div class="row1">
+                <div class="media1">
+                    <img src="assets/videos/Comparisons/Pexels/Input_pairs/example8/frame1.png" alt="Image 1" data-base-path="assets/videos/Comparisons/Pexels/Input_pairs/example8/">
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/FILM/example8.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/SVD_Feng/example8.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/Ours/example8.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!-- example11 -->
+            <div class="row1">
+                <div class="media1">Input pairs</div>
+                <div class="media1">FILM</div>
+                <div class="media1">TRF</div>
+                <div class="media1">Ours</div>
+            </div>
+            <div class="row1">
+                <div class="media1">
+                    <img src="assets/videos/Comparisons/Davis/Input_pairs/camel2/frame1.jpg" alt="Image 1" data-base-path="assets/videos/Comparisons/Davis/Input_pairs/camel2/">
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Davis/FILM/camel2.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Davis/SVD_Feng/camel2.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Davis/Ours/camel2.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div> 
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <h2 class="title is-2 is-centered has-text-centered">Baseline comparisons in articulated motions</h2>
+            <!-- example1 -->
+            <div class="row1">
+                <div class="media1">Input pairs</div>
+                <div class="media1">FILM</div>
+                <div class="media1">TRF</div>
+                <div class="media1">Ours</div>
+            </div>
+            <div class="row1">
+                <div class="media1">
+                    <img src="assets/videos/Comparisons/Pexels/Input_pairs/example10/frame1.png" alt="Image 1" data-base-path="assets/videos/Comparisons/Pexels/Input_pairs/example10/">
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/FILM/example10.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/SVD_Feng/example10.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/Ours/example10.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!-- example2 -->
+            <div class="row1">
+                <div class="media1">Input pairs</div>
+                <div class="media1">FILM</div>
+                <div class="media1">TRF</div>
+                <div class="media1">Ours</div>
+            </div>
+            <div class="row1">
+                <div class="media1">
+                    <img src="assets/videos/Comparisons/Pexels/Input_pairs/example11/frame1.png" alt="Image 1" data-base-path="assets/videos/Comparisons/Pexels/Input_pairs/example11/">
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/FILM/example11.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/SVD_Feng/example11.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/Ours/example11.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!-- example3 -->
+            <div class="row1">
+                <div class="media1">Input pairs</div>
+                <div class="media1">FILM</div>
+                <div class="media1">TRF</div>
+                <div class="media1">Ours</div>
+            </div>
+            <div class="row1">
+                <div class="media1">
+                    <img src="assets/videos/Comparisons/Pexels/Input_pairs/example9/frame1.png" alt="Image 1" data-base-path="assets/videos/Comparisons/Pexels/Input_pairs/example9/">
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/FILM/example9.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/SVD_Feng/example9.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media1">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Comparisons/Pexels/Ours/example9.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2 class="title is-2 is-centered has-text-centered">Keyframe interpolation with variable second frames</h2>
+            <!-- example1 -->
+            <div class="row1">
+                <div class="media2"><i>Input frame 1</i></div>
+                <div class="media2"><i>Our results</i></div>
+                <div class="media2"><i>Input frame 2</i></div>
+            </div>
+
+            <div class="row1">
+                <div class="media2">
+                    <img src="assets/videos/Variations/example1/frame1.png" alt="Image 1">
+                </div>
+                <div class="media2">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Variations/example1/frame25.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media2">
+                    <img src="assets/videos/Variations/example1/frame25.png" alt="Image 1">
+                </div>
+            </div>
+            <div class="row1">
+                <div class="media2">
+                    <img src="assets/videos/Variations/example1/frame1.png" alt="Image 1">
+                </div>
+                <div class="media2">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Variations/example1/frame50.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media2">
+                    <img src="assets/videos/Variations/example1/frame50.png" alt="Image 1">
+                </div>
+            </div>
+
+            <!-- example2 -->
+            <div class="row1">
+                <div class="media2"><i>Input frame 1</i></div>
+                <div class="media2"><i>Our results</i></div>
+                <div class="media2"><i>Input frame 2</i></div>
+            </div>
+            <div class="row1">
+                <div class="media2">
+                    <img src="assets/videos/Variations/example3/frame1.png" alt="Image 1">
+                </div>
+                <div class="media2">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Variations/example3/frame25.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media2">
+                    <img src="assets/videos/Variations/example3/frame25.png" alt="Image 1">
+                </div>
+            </div>
+            <div class="row1">
+                <div class="media2">
+                    <img src="assets/videos/Variations/example3/frame1.png" alt="Image 1">
+                </div>
+                <div class="media2">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Variations/example3/frame62.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media2">
+                    <img src="assets/videos/Variations/example3/frame62.png" alt="Image 1">
+                </div>
+            </div>
+
+
+            <!-- example3 -->
+            <div class="row1">
+                <div class="media2"><i>Input frame 1</i></div>
+                <div class="media2"><i>Our results</i></div>
+                <div class="media2"><i>Input frame 2</i></div>
+            </div>
+            <div class="row1">
+                <div class="media2">
+                    <img src="assets/videos/Variations/example2/frame1.png" alt="Image 1">
+                </div>
+                <div class="media2">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Variations/example2/frame25.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media2">
+                    <img src="assets/videos/Variations/example2/frame25.png" alt="Image 1">
+                </div>
+            </div>
+            <div class="row1">
+                <div class="media2">
+                    <img src="assets/videos/Variations/example2/frame1.png" alt="Image 1">
+                </div>
+                <div class="media2">
+                    <video autoplay muted loop>
+                        <source src="assets/videos/Variations/example2/frame50.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="media2">
+                    <img src="assets/videos/Variations/example2/frame50.png" alt="Image 1">
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
