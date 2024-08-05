@@ -98,6 +98,14 @@
                                     </a>
                                 </span>
                                 <span class="link-block">
+                                    <a href="#results1" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <img src="assets/hand.svg" />
+                                        </span>
+                                        <span>Results</span>
+                                    </a>
+                                </span>
+                                <span class="link-block">
                                     <a href="" target="_blank" class="external-link button is-normal is-rounded is-dark">
                                         <span class="icon">
                                             <i class="fab fa-github"></i>
@@ -113,7 +121,7 @@
         </div>
     </section>
   
-    <section>
+    <section class="section">
         <div class="container">
             <div class="row1">
                 <div class="media3">
@@ -129,17 +137,40 @@
                     </video>
                 </div>
             </div>
-            
-                    <h2 class="caption is-size-5 subtitle has-text-centered">
-                    <b>TL;DR: </b>Given a pair of key frames as input, our method generates a continuous intermediate video with consistent motion (25 frames of size 1024x576) using an image-to-video diffusion model.
-                    </h2>
-           
-
-        </div>
+                <h2 class="caption is-size-5 subtitle has-text-centered">
+                    <b>TL;DR: </b>Given a pair of key frames as input, our method generates a continuous intermediate video with consistent motion (25 frames of size 1024x576) using a pretrained image-to-video diffusion model.
+                </h2>
+            </div>
     </section>
-   
+    <hr>
 
     <section class="section">
+        <div class="container is-max-desktop">
+            <h2 class="title is-2 is-centered has-text-centered">Abstract</h2>
+                <div class="">
+                    We present a method for generating video sequences with consistent motion between a pair of input key frames. We use a pretrained large-scale image-to-video diffusion model originally trained to generate videos moving forward in time from a single input image, and re-purpose it for key frame interpolation. Our method includes a lightweight fine-tuning technique for the model to generate backward motion from the second keyframe, and a dual-directional diffusion sampling process that combines the forward and backward motion generations starting from each keyframe. For backward motion generation, we use 180-degree rotated temporal self-attention maps from the forward motion as extra input, requiring fine-tuning of less than 2% of the model's parameters. This approach ensures forward-backward motion consistency in the interpolated videos. Our experiments shows that our method outperforms both existing diffusion-based methods and traditional frame interpolation techniques.
+                </div>
+         </div>
+    </section>
+    <hr>
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <h2 class="title is-2 is-centered has-text-centered">Method</h2>
+                <div class="hero is-full">
+                    <div class="results-single">
+                        <img src="assets/method_overview.jpg" width="800">
+                    </div>
+                </div>
+                <div class="">
+                    The pipeline includes three stages: <b> (1) Forward motion prediction</b>: we first take the conditioning of the first input image (inference stage) or the first frame in the video (fine-tuning stage), along with the noisy latent to feed into the pre-trained 3D UNet to get the noise predictions, as well as the temporal self attention maps. <b> (2) Backward motion prediction</b>: We reverse the noisy latent  along temporal axis, and then we take the conditioning of the second input image, or the last frame in the video, along with the 180-degree rotated temporal self-attention maps, and feed them through the fine-tuned 3D UNet for backward motion prediction. <b> (3) Fuse and update </b>: The predicted backward motion noise is reversed again to fuse with the forward motion noise to create consistent motion path. Note that only the <b>value and output projection matrices</b> in the temporal self-attention layers (green) are fine-tuned.
+                </div>
+        </div>
+    </section>
+    <hr>
+   
+
+    <section id="results1" class="section">
         <div class="container">
             <h2 class="title is-2 is-centered has-text-centered">Baseline comparisons</h2>
             <!-- example1 -->
@@ -147,7 +178,7 @@
                 <div class="media1">Input pairs</div>
                 <div class="media1">FILM</div>
                 <div class="media1">TRF</div>
-                <div class="media1">Ours</div>
+                <div class="media1"><b>Ours</b></div>
             </div>
             <div class="row1">
                 <div class="media1">
@@ -178,7 +209,7 @@
                 <div class="media1">Input pairs</div>
                 <div class="media1">FILM</div>
                 <div class="media1">TRF</div>
-                <div class="media1">Ours</div>
+                <div class="media1"><b>Ours</b></div>
             </div>
             <div class="row1">
                 <div class="media1">
@@ -209,7 +240,7 @@
                 <div class="media1">Input pairs</div>
                 <div class="media1">FILM</div>
                 <div class="media1">TRF</div>
-                <div class="media1">Ours</div>
+                <div class="media1"><b>Ours</b></div>
             </div>
             <div class="row1">
                 <div class="media1">
@@ -240,7 +271,7 @@
                 <div class="media1">Input pairs</div>
                 <div class="media1">FILM</div>
                 <div class="media1">TRF</div>
-                <div class="media1">Ours</div>
+                <div class="media1"><b>Ours</b></div>
             </div>
             <div class="row1">
                 <div class="media1">
@@ -271,7 +302,7 @@
                 <div class="media1">Input pairs</div>
                 <div class="media1">FILM</div>
                 <div class="media1">TRF</div>
-                <div class="media1">Ours</div>
+                <div class="media1"><b>Ours</b></div>
             </div>
             <div class="row1">
                 <div class="media1">
@@ -302,7 +333,7 @@
                 <div class="media1">Input pairs</div>
                 <div class="media1">FILM</div>
                 <div class="media1">TRF</div>
-                <div class="media1">Ours</div>
+                <div class="media1"><b>Ours</b></div>
             </div>
             <div class="row1">
                 <div class="media1">
@@ -333,7 +364,7 @@
                 <div class="media1">Input pairs</div>
                 <div class="media1">FILM</div>
                 <div class="media1">TRF</div>
-                <div class="media1">Ours</div>
+                <div class="media1"><b>Ours</b></div>
             </div>
             <div class="row1">
                 <div class="media1">
@@ -364,7 +395,7 @@
                 <div class="media1">Input pairs</div>
                 <div class="media1">FILM</div>
                 <div class="media1">TRF</div>
-                <div class="media1">Ours</div>
+                <div class="media1"><b>Ours</b></div>
             </div>
             <div class="row1">
                 <div class="media1">
@@ -395,7 +426,7 @@
                 <div class="media1">Input pairs</div>
                 <div class="media1">FILM</div>
                 <div class="media1">TRF</div>
-                <div class="media1">Ours</div>
+                <div class="media1"><b>Ours</b></div>
             </div>
             <div class="row1">
                 <div class="media1">
@@ -426,7 +457,7 @@
                 <div class="media1">Input pairs</div>
                 <div class="media1">FILM</div>
                 <div class="media1">TRF</div>
-                <div class="media1">Ours</div>
+                <div class="media1"><b>Ours</b></div>
             </div>
             <div class="row1">
                 <div class="media1">
@@ -457,7 +488,7 @@
                 <div class="media1">Input pairs</div>
                 <div class="media1">FILM</div>
                 <div class="media1">TRF</div>
-                <div class="media1">Ours</div>
+                <div class="media1"><b>Ours</b></div>
             </div>
             <div class="row1">
                 <div class="media1">
@@ -484,7 +515,9 @@
             </div> 
         </div>
     </section>
-    <section>
+    <hr>
+
+    <section class="section">
         <div class="container">
             <h2 class="title is-2 is-centered has-text-centered">Baseline comparisons in articulated motions</h2>
             <!-- example1 -->
@@ -492,7 +525,7 @@
                 <div class="media1">Input pairs</div>
                 <div class="media1">FILM</div>
                 <div class="media1">TRF</div>
-                <div class="media1">Ours</div>
+                <div class="media1"><b>Ours</b></div>
             </div>
             <div class="row1">
                 <div class="media1">
@@ -523,7 +556,7 @@
                 <div class="media1">Input pairs</div>
                 <div class="media1">FILM</div>
                 <div class="media1">TRF</div>
-                <div class="media1">Ours</div>
+                <div class="media1"><b>Ours</b></div>
             </div>
             <div class="row1">
                 <div class="media1">
@@ -554,7 +587,7 @@
                 <div class="media1">Input pairs</div>
                 <div class="media1">FILM</div>
                 <div class="media1">TRF</div>
-                <div class="media1">Ours</div>
+                <div class="media1"><b>Ours</b></div>
             </div>
             <div class="row1">
                 <div class="media1">
@@ -581,8 +614,9 @@
             </div>
         </div>
     </section>
+    <hr>
 
-    <section>
+    <section class="section">
         <div class="container">
             <h2 class="title is-2 is-centered has-text-centered">Keyframe interpolation with variable second frames</h2>
             <!-- example1 -->
@@ -691,6 +725,16 @@
                     <img src="assets/videos/Variations/example2/frame50.png" alt="Image 1">
                 </div>
             </div>
+        </div>
+    </section>
+
+    <hr>
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+            <h2 class="title is-4">Acknowledgements</h2>
+            <span>
+              We would like to thank Meng-Li Shih, Bowei Chen, and Dor Verbin for helpful discussions, feedback, and manuscript proofreading. We also would like to thank Zihao Ye for computational resources support. 
+            </span>
         </div>
     </section>
 </body>
